@@ -5,13 +5,28 @@ import {
   StyleSheet,
   FlatList,
   SafeAreaView,
-  Alert,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { TaskItem } from '../components/TaskItem';
-import { MOCK_TASKS, MOCK_CATEGORIES, getCategoryById } from '../data/mockTasks';
-import { Task } from '../types';
+import { MOCK_TASKS, getCategoryById } from '../data/mockTasks';
+import { Task, TaskStackParamList } from '../types';
 import { COLORS, SPACING, FONT_SIZES } from '../constants';
+
+// ============================================================
+// TYPED SCREEN COMPONENT
+// ============================================================
+//
+// NativeStackScreenProps gives us typed access to:
+// - navigation.navigate('TaskDetail', { task })
+// - navigation.goBack()
+// - route.params (if this screen had any)
+//
+// The second generic 'TaskList' tells TS which screen this is,
+// so it knows what params to expect (undefined in this case).
+// ============================================================
+
+type Props = NativeStackScreenProps<TaskStackParamList, 'TaskList'>;
 
 // ============================================================
 // FLATLIST EXPLAINED
@@ -36,19 +51,15 @@ import { COLORS, SPACING, FONT_SIZES } from '../constants';
 // - contentContainerStyle: Style for the scroll content
 // ============================================================
 
-export function TaskListScreen() {
+export function TaskListScreen({ navigation }: Props) {
   // Local state for tasks - we'll toggle completion here
   // Later this will come from Supabase with real-time updates
   const [tasks, setTasks] = useState<Task[]>(MOCK_TASKS);
 
-  // Handler for tapping a task (will navigate to detail screen in Module 3)
+  // Navigate to task detail screen
+  // navigation.navigate is fully typed - try changing 'TaskDetail' to see errors
   const handleTaskPress = (task: Task) => {
-    // Alert is React Native's built-in dialog - works on both platforms
-    Alert.alert(
-      task.title,
-      task.description || 'No description',
-      [{ text: 'OK' }]
-    );
+    navigation.navigate('TaskDetail', { task });
   };
 
   // Handler for toggling task completion

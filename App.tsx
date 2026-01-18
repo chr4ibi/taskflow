@@ -1,11 +1,32 @@
-import { TaskListScreen } from './src/screens';
+import { NavigationContainer } from '@react-navigation/native';
+import { StatusBar } from 'expo-status-bar';
+import { AppNavigator } from './src/navigation';
 
-// App.tsx is the root component - everything starts here
-// In React Native, there's no index.html. This IS your app.
+// ============================================================
+// APP ROOT WITH NAVIGATION
+// ============================================================
 //
-// Currently we're rendering TaskListScreen directly.
-// In Module 3, we'll add React Navigation here to handle multiple screens.
+// NavigationContainer is the root component for React Navigation.
+// It manages the navigation state and links your app to the navigator.
+//
+// Think of it like BrowserRouter in React Router - it must wrap
+// everything that needs access to navigation.
+//
+// The hierarchy is now:
+// App
+// └── NavigationContainer
+//     └── AppNavigator (Tab Navigator)
+//         ├── TaskStackNavigator
+//         │   ├── TaskListScreen
+//         │   └── TaskDetailScreen
+//         └── SettingsScreen
+// ============================================================
 
 export default function App() {
-  return <TaskListScreen />;
+  return (
+    <NavigationContainer>
+      <AppNavigator />
+      <StatusBar style="dark" />
+    </NavigationContainer>
+  );
 }

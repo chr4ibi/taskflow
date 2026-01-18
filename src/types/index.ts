@@ -33,3 +33,6 @@ export interface User {
   email: string;
   created_at: string;
 }
+
+// Re-export navigation types
+export * from './navigation';
